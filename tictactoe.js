@@ -1,243 +1,165 @@
-// Cyberpunk Tic Tac Toe Game Logic
+let board, statusText, startScreen, gameContainer, winnerMessage, fireworks;
+let currentPlayer, gameActive, gameState;
+let playerXName, playerOName;
+let scores = JSON.parse(localStorage.getItem("scores")) || {};
 
-// Elemen DOM
-let board;
-let statusText;
-let startScreen;
-let gameContainer;
-let winnerMessage;
-let winnerText;
-let fireworks;
-
-// Variabel game
-let currentPlayer;
-let gameActive;
-let gameState;
-let winningCells = [];
-
-// Initialize the game when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  // Get DOM elements
+document.addEventListener("DOMContentLoaded", () => {
   board = document.getElementById("board");
   statusText = document.getElementById("status");
   startScreen = document.getElementById("start-screen");
   gameContainer = document.getElementById("game-container");
   winnerMessage = document.getElementById("winner-message");
-  winnerText = document.getElementById("winner-text");
   fireworks = document.getElementById("fireworks");
-  
-  // Add event listeners for buttons
+
   document.getElementById("start-btn").addEventListener("click", startGame);
   document.getElementById("reset-btn").addEventListener("click", resetGame);
   document.getElementById("continue-btn").addEventListener("click", continueGame);
-  
-  // Initialize game
+
   currentPlayer = "X";
+  gameState = Array(9).fill("");
   gameActive = true;
-  gameState = ["", "", "", "", "", "", "", "", ""];
+
+  updateLeaderboard();
 });
 
-// Kombinasi kemenangan
 const winningConditions = [
-  [0, 1, 2], // Baris atas
-  [3, 4, 5], // Baris tengah
-  [6, 7, 8], // Baris bawah
-  [0, 3, 6], // Kolom kiri
-  [1, 4, 7], // Kolom tengah
-  [2, 5, 8], // Kolom kanan
-  [0, 4, 8], // Diagonal kiri atas ke kanan bawah
-  [2, 4, 6]  // Diagonal kanan atas ke kiri bawah
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
 ];
 
-// Mulai game
 function startGame() {
+  playerXName = document.getElementById("playerX").value.trim() || "Player X";
+  playerOName = document.getElementById("playerO").value.trim() || "Player O";
+
+  localStorage.setItem("playerX", playerXName);
+  localStorage.setItem("playerO", playerOName);
+
   startScreen.style.display = "none";
   gameContainer.style.display = "block";
   createBoard();
 }
 
-// Lanjutkan game setelah menang
-function continueGame() {
-  winnerMessage.style.display = "none";
-  resetGame();
-}
-
-// Buat papan
 function createBoard() {
   board.innerHTML = "";
-  gameState = ["", "", "", "", "", "", "", "", ""];
+  gameState = Array(9).fill("");
   gameActive = true;
   currentPlayer = "X";
-  winningCells = [];
-  statusText.innerHTML = `Giliran: <span class="highlight">${currentPlayer}</span>`;
+  updateStatus();
 
   for (let i = 0; i < 9; i++) {
     const cell = document.createElement("div");
     cell.classList.add("cell");
-    cell.setAttribute("data-index", i);
-    
-    // Tambahkan event listeners
+    cell.dataset.index = i;
     cell.addEventListener("click", cellClick);
-    cell.addEventListener("mouseenter", cellHover);
-    cell.addEventListener("mouseleave", cellLeave);
-    
     board.appendChild(cell);
   }
 }
 
-// Efek hover pada sel
-function cellHover(e) {
-  const index = parseInt(e.target.getAttribute("data-index"));
-  if (gameState[index] === "" && gameActive) {
-    e.target.textContent = currentPlayer;
-    e.target.style.opacity = "0.5";
-    if (currentPlayer === "X") {
-      e.target.style.color = "var(--neon-blue)";
-      e.target.style.textShadow = "0 0 5px var(--neon-blue)";
-    } else {
-      e.target.style.color = "var(--neon-pink)";
-      e.target.style.textShadow = "0 0 5px var(--neon-pink)";
-    }
-  }
-}
-
-// Hapus efek hover
-function cellLeave(e) {
-  const index = parseInt(e.target.getAttribute("data-index"));
-  if (gameState[index] === "") {
-    e.target.textContent = "";
-    e.target.style.opacity = "1";
-    e.target.style.textShadow = "none";
-  }
-}
-
-// Klik pada sel
 function cellClick(e) {
-  const cell = e.target;
-  const index = parseInt(cell.getAttribute("data-index"));
-
+  const index = e.target.dataset.index;
   if (gameState[index] !== "" || !gameActive) return;
 
-  // Tambahkan efek glitch saat klik
-  cell.classList.add("glitch-click");
-  setTimeout(() => {
-    cell.classList.remove("glitch-click");
-  }, 300);
-
-  // Update state dan tampilan
   gameState[index] = currentPlayer;
-  cell.textContent = currentPlayer;
-  cell.style.opacity = "1";
-  cell.classList.add("taken");
-  
-  // Tambahkan kelas untuk styling berdasarkan pemain
-  if (currentPlayer === "X") {
-    cell.classList.add("x-mark");
-  } else {
-    cell.classList.add("o-mark");
-  }
+  e.target.textContent = currentPlayer;
+  e.target.classList.add(currentPlayer === "X" ? "x-mark" : "o-mark");
 
   checkResult();
 }
 
-// Buat efek kembang api untuk perayaan kemenangan
-function createFireworks() {
-  if (fireworks) {
-    fireworks.innerHTML = "";
-    
-    // Buat 20 partikel kembang api
-    for (let i = 0; i < 20; i++) {
-      createParticle(fireworks);
-    }
-  }
-}
-
-// Buat partikel kembang api
-function createParticle(container) {
-  const particle = document.createElement("div");
-  particle.classList.add("particle");
-  
-  // Posisi acak
-  const x = Math.random() * 100;
-  const y = Math.random() * 100;
-  
-  // Warna acak (neon blue atau neon pink)
-  const color = Math.random() > 0.5 ? "var(--neon-blue)" : "var(--neon-pink)";
-  
-  // Atur properti partikel
-  particle.style.left = `${x}%`;
-  particle.style.top = `${y}%`;
-  particle.style.backgroundColor = color;
-  particle.style.boxShadow = `0 0 10px ${color}`;
-  
-  container.appendChild(particle);
-  
-  // Hapus partikel setelah animasi selesai
-  setTimeout(() => {
-    particle.remove();
-  }, 1000 + Math.random() * 1000);
-}
-
-// Periksa hasil setelah setiap gerakan
 function checkResult() {
   let roundWon = false;
-  let winningPattern = [];
+  let winner;
 
-  // Periksa kemenangan
-  for (let i = 0; i < winningConditions.length; i++) {
-    const [a, b, c] = winningConditions[i];
+  for (let condition of winningConditions) {
+    const [a, b, c] = condition;
     if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
       roundWon = true;
-      winningPattern = [a, b, c];
-      winningCells = winningPattern;
+      winner = currentPlayer;
+      highlightWinningCells(condition);
       break;
     }
   }
 
-  // Jika ada pemenang
   if (roundWon) {
     gameActive = false;
-    highlightWinningCells(winningPattern);
-    
-    // Tampilkan pesan kemenangan setelah delay
+    const winnerName = winner === "X" ? playerXName : playerOName;
+
+    if (!scores[winnerName]) scores[winnerName] = 0;
+    scores[winnerName]++;
+    localStorage.setItem("scores", JSON.stringify(scores));
+    updateLeaderboard();
+
+    // Efek glitch di papan
+    board.classList.add("glitch-win");
+    setTimeout(() => board.classList.remove("glitch-win"), 1000);
+
     setTimeout(() => {
-      document.getElementById("winner-player").textContent = currentPlayer;
-      document.getElementById("winner-player").className = currentPlayer === "X" ? "x-color" : "o-color";
+      document.getElementById("winner-player").textContent = winnerName;
       winnerMessage.style.display = "flex";
-      
-      // Mulai animasi kembang api
       createFireworks();
-    }, 1000);
-    
+    }, 500);
+
     return;
   }
 
-  // Periksa seri
   if (!gameState.includes("")) {
     gameActive = false;
-    statusText.textContent = "Permainan berakhir seri!";
+    statusText.textContent = "Seri!";
     return;
   }
 
-  // Ganti pemain
   currentPlayer = currentPlayer === "X" ? "O" : "X";
-  statusText.innerHTML = `Giliran: <span class="${currentPlayer === "X" ? "x-color" : "o-color"}">${currentPlayer}</span>`;
+  updateStatus();
 }
 
-// Sorot sel yang menang
+function updateStatus() {
+  const name = currentPlayer === "X" ? playerXName : playerOName;
+  const colorClass = currentPlayer === "X" ? "x-mark" : "o-mark";
+  statusText.innerHTML = `Giliran: <span class="${colorClass}">${name}</span>`;
+}
+
 function highlightWinningCells(pattern) {
-  pattern.forEach(index => {
-    const cell = document.querySelector(`[data-index="${index}"]`);
-    cell.classList.add("winning-cell");
+  pattern.forEach(i => document.querySelector(`[data-index="${i}"]`).classList.add("winning-cell"));
+}
+
+function resetGame() { createBoard(); }
+function continueGame() { winnerMessage.style.display = "none"; resetGame(); }
+
+function updateLeaderboard() {
+  const list = document.getElementById("leaderboard-list");
+  list.innerHTML = "";
+
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  sorted.forEach(([name, score]) => {
+    const li = document.createElement("li");
+    li.textContent = `${name}: ${score} menang`;
+    list.appendChild(li);
   });
 }
 
-// Reset permainan
-function resetGame() {
-  // Tambahkan efek glitch saat reset
-  board.classList.add("glitch-reset");
-  setTimeout(() => {
-    board.classList.remove("glitch-reset");
-    createBoard();
-  }, 500);
+// Efek fireworks
+function createFireworks() {
+  if (fireworks) {
+    fireworks.innerHTML = "";
+
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement("div");
+      particle.classList.add("particle");
+
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+
+      const colors = ["var(--neon-blue)", "var(--neon-pink)", "var(--neon-purple)"];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      particle.style.left = `${x}%`;
+      particle.style.top = `${y}%`;
+      particle.style.backgroundColor = color;
+      particle.style.boxShadow = `0 0 12px ${color}`;
+
+      fireworks.appendChild(particle);
+      setTimeout(() => particle.remove(), 1200);
+    }
+  }
 }

@@ -5,14 +5,9 @@
   --neon-pink: #ff00ff;
   --neon-purple: #bc13fe;
   --dark-bg: #0a0a0f;
-  --darker-bg: #050507;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   display: flex;
@@ -21,284 +16,132 @@ body {
   justify-content: center;
   min-height: 100vh;
   background-color: var(--dark-bg);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(188, 19, 254, 0.1) 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 20%);
   color: white;
   font-family: 'Share Tech Mono', monospace;
-  position: relative;
   overflow-x: hidden;
 }
 
-/* Scanline effect */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%);
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0.15;
-  animation: scanline 10s linear infinite;
-}
-
-@keyframes scanline {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 100%; }
-}
-
-/* Grid background */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    linear-gradient(90deg, var(--dark-bg) 99.5%, var(--neon-blue) 99.5%),
-    linear-gradient(0deg, var(--dark-bg) 99.5%, var(--neon-blue) 99.5%);
-  background-size: 30px 30px;
-  opacity: 0.1;
-  z-index: -1;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  position: relative;
-}
-
+/* Judul */
 h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 3rem;
   margin-bottom: 20px;
   text-shadow: 0 0 10px var(--neon-blue);
-  letter-spacing: 3px;
 }
 
-.highlight {
-  color: var(--neon-blue);
+.highlight { color: var(--neon-blue); }
+
+/* Start Screen */
+.start-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(10, 10, 15, 0.95);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 100;
+}
+.start-content {
+  padding: 30px;
+  border: 2px solid var(--neon-blue);
+  box-shadow: 0 0 20px var(--neon-blue);
+  background-color: rgba(5, 5, 7, 0.8);
+  text-align: center;
+}
+.player-inputs { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+.player-inputs label {
+  color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue);
+}
+.player-inputs input {
+  padding: 8px; background: rgba(10, 10, 15, 0.7);
+  border: 2px solid var(--neon-blue); color: var(--neon-blue);
+  text-align: center; font-family: 'Share Tech Mono', monospace;
 }
 
+/* Board */
 #board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  position: relative;
   margin: 20px 0;
 }
-
 .cell {
-  width: 100px;
-  height: 100px;
+  width: 100px; height: 100px;
   background: rgba(10, 10, 15, 0.7);
   border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem; cursor: pointer;
 }
+.cell.x-mark { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+.cell.o-mark { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+.winning-cell { animation: flash 1s infinite; }
+@keyframes flash { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
 
-.cell:hover {
-  box-shadow: 0 0 15px var(--neon-blue);
+/* Efek glitch saat menang */
+.glitch-win {
+  animation: glitchBoard 0.5s infinite;
 }
-
-.cell.taken {
-  cursor: not-allowed;
-}
-
-.cell.x-mark {
-  color: var(--neon-blue);
-  text-shadow: 0 0 10px var(--neon-blue);
-}
-
-.cell.o-mark {
-  color: var(--neon-pink);
-  text-shadow: 0 0 10px var(--neon-pink);
-}
-
-.win-cell {
-  animation: winFlash 1.5s infinite;
-}
-
-@keyframes winFlash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-#status {
-  margin: 20px 0;
-  font-size: 1.2rem;
-  text-align: center;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-}
-
-.winner-message {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(10, 10, 15, 0.9);
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.winner-content {
-  text-align: center;
-  padding: 40px;
-  border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 20px var(--neon-pink);
-  background-color: rgba(5, 5, 7, 0.8);
-  animation: glitch 0.3s infinite alternate;
-}
-
-.winner-content h2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px var(--neon-pink);
-}
-
-.start-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(10, 10, 15, 0.9);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.start-content {
-  text-align: center;
-  padding: 40px;
-  border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 20px var(--neon-blue);
-  background-color: rgba(5, 5, 7, 0.8);
-}
-
-.start-content h2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px var(--neon-blue);
-}
-
-button {
-  margin: 15px 0;
-  padding: 10px 25px;
-  font-size: 1rem;
-  font-family: 'Share Tech Mono', monospace;
-  background: transparent;
-  color: var(--neon-blue);
-  border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-button:hover {
-  background: rgba(0, 243, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
-}
-
-.glow-btn {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 10px var(--neon-blue); }
-  50% { box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue); }
-  100% { box-shadow: 0 0 10px var(--neon-blue); }
-}
-
-@keyframes glitch {
+@keyframes glitchBoard {
   0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(3px, -3px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
   100% { transform: translate(0); }
 }
 
-.glitch-click {
-  animation: glitch 0.3s ease-in-out;
+/* Buttons */
+button {
+  margin: 10px; padding: 8px 20px;
+  background: transparent; border: 2px solid var(--neon-blue);
+  color: var(--neon-blue); font-family: 'Share Tech Mono', monospace;
+  cursor: pointer; transition: 0.3s;
 }
+button:hover { background: rgba(0,243,255,0.1); box-shadow: 0 0 10px var(--neon-blue); }
+.glow-btn { animation: pulse 2s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 10px var(--neon-blue);}50%{box-shadow:0 0 20px var(--neon-blue);}100%{box-shadow:0 0 10px var(--neon-blue);} }
 
-.glitch-reset {
-  animation: glitch 0.5s ease-in-out;
+/* Leaderboard */
+.leaderboard {
+  margin-top: 20px;
+  padding: 15px;
+  border: 2px solid var(--neon-purple);
+  background: rgba(5,5,7,0.85);
+  box-shadow: 0 0 15px var(--neon-purple);
+  text-align: center;
 }
+.leaderboard h2 { color: var(--neon-purple); margin-bottom: 10px; }
+.leaderboard li { color: var(--neon-blue); margin: 5px 0; }
 
-/* Fireworks styles */
+/* Winner Message */
+.winner-message {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background-color: rgba(10,10,15,0.9);
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; z-index: 200;
+}
+.winner-content {
+  padding: 20px; border: 2px solid var(--neon-pink);
+  box-shadow: 0 0 20px var(--neon-pink);
+  background: rgba(5,5,7,0.8); text-align: center;
+}
+.winner-content h2 { color: var(--neon-pink); }
+
+/* Fireworks */
 #fireworks {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   pointer-events: none;
-  z-index: 5;
+  z-index: 300;
 }
-
 .particle {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   animation: explode 1s forwards;
 }
-
 @keyframes explode {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    transform: scale(3);
-    opacity: 0;
-  }
-}
-
-.x-color {
-  color: var(--neon-blue);
-  text-shadow: 0 0 10px var(--neon-blue);
-}
-
-.o-color {
-  color: var(--neon-pink);
-  text-shadow: 0 0 10px var(--neon-pink);
-}
-
-.winning-cell {
-  animation: winFlash 1.5s infinite;
+  0% { transform: scale(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
 }

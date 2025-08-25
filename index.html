@@ -8,21 +8,36 @@
 </head>
 <body>
   <div class="container">
-    <h1><span class="highlight">CYBER</span>TIC TAC TOE</h1>
+    <h1><span class="highlight">CYBER</span> TIC TAC TOE</h1>
     
+    <!-- Start Screen -->
     <div id="start-screen" class="start-screen">
       <div class="start-content">
-        <h2>SIAP BERMAIN?</h2>
+        <h2>MASUKKAN NAMA PEMAIN</h2>
+        <div class="player-inputs">
+          <label for="playerX">Pemain X</label>
+          <input type="text" id="playerX" placeholder="Nama Pemain X">
+          <label for="playerO">Pemain O</label>
+          <input type="text" id="playerO" placeholder="Nama Pemain O">
+        </div>
         <button id="start-btn" class="glow-btn">MULAI GAME</button>
       </div>
     </div>
-    
+
+    <!-- Game Container -->
     <div id="game-container" style="display: none;">
-      <div id="board"></div>
       <p id="status">Giliran: X</p>
+      <div id="board"></div>
       <button id="reset-btn">Restart</button>
+
+      <!-- Leaderboard -->
+      <div id="leaderboard" class="leaderboard">
+        <h2>🏆 LEADERBOARD 🏆</h2>
+        <ul id="leaderboard-list"></ul>
+      </div>
     </div>
-    
+
+    <!-- Winner Message -->
     <div id="winner-message" class="winner-message">
       <div class="winner-content">
         <h2 id="winner-text">PEMAIN <span id="winner-player">X</span> MENANG!</h2>
