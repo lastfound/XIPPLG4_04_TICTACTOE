@@ -229,6 +229,12 @@ function createDrawFireworks() {
 
             drawFireworks.appendChild(particle);
             setTimeout(() => particle.remove(), 1200);
+
+          drawExtraSound = document.getElementById("draw-extra-sound");
+            if (drawExtraSound) {
+                drawExtraSound.currentTime = 0;
+                drawExtraSound.play();
+            }
         }
     }
 }
