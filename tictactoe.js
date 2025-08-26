@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (lobbyMusic) {
         lobbyMusic.volume = 0.5;
+        // autoplay muted dulu (biar lolos aturan browser)
         lobbyMusic.play().catch(() => {
             console.log("Autoplay dicegah, musik lobby akan aktif setelah interaksi user.");
         });
@@ -36,13 +37,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { once: true });
     }
 
-    // Tombol START di lobby → ke input nama
+    // Tombol START di lobby
     const goToStartBtn = document.getElementById("go-to-start");
     if (goToStartBtn) {
         goToStartBtn.addEventListener("click", () => {
+            // sembunyikan lobby, tampilkan input nama
             lobbyScreen.style.display = "none";
             startScreen.style.display = "flex";
-            // ❌ jangan stop musik di sini, biarkan lanjut sampai game dimulai
+
+            // stop musik lobby
+            if (lobbyMusic) {
+                lobbyMusic.pause();
+                lobbyMusic.currentTime = 0;
+            }
         });
     }
     // --- akhir tambahan ---
@@ -85,12 +92,6 @@ function startGame() {
     startScreen.style.display = "none";
     gameContainer.style.display = "block";
     createBoard();
-
-    // ✅ musik lobby berhenti setelah game benar-benar dimulai
-    if (lobbyMusic) {
-        lobbyMusic.pause();
-        lobbyMusic.currentTime = 0;
-    }
 }
 
 function createBoard() {
@@ -113,11 +114,13 @@ function cellClick(e) {
     const index = e.target.dataset.index;
     if (gameState[index] !== "" || !gameActive) return;
 
+    // Tambahkan efek animasi klik
     e.target.classList.add("clicked");
     setTimeout(() => {
         e.target.classList.remove("clicked");
     }, 150);
 
+    // Putar suara klik
     clickSound.currentTime = 0;
     clickSound.play();
 
@@ -134,7 +137,11 @@ function checkResult() {
 
     for (let condition of winningConditions) {
         const [a, b, c] = condition;
-        if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+        if (
+            gameState[a] &&
+            gameState[a] === gameState[b] &&
+            gameState[a] === gameState[c]
+        ) {
             roundWon = true;
             winner = currentPlayer;
             highlightWinningCells(condition);
@@ -144,12 +151,17 @@ function checkResult() {
 
     if (!gameState.includes("")) {
         gameActive = false;
+
+        // Putar suara seri
         drawSound.currentTime = 0;
         drawSound.play();
+
+        // Tampilkan pesan seri
         setTimeout(() => {
             drawMessage.style.display = "flex";
             createDrawFireworks();
         }, 500);
+
         return;
     }
 
@@ -174,6 +186,12 @@ function checkResult() {
             createFireworks();
         }, 500);
 
+        return;
+    }
+
+    if (!gameState.includes("")) {
+        gameActive = false;
+        statusText.textContent = "Seri!";
         return;
     }
 
@@ -218,12 +236,14 @@ function updateLeaderboard() {
 function createDrawFireworks() {
     if (drawFireworks) {
         drawFireworks.innerHTML = "";
+
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement("div");
             particle.classList.add("particle");
 
             const x = Math.random() * 100;
             const y = Math.random() * 100;
+
             const colors = ["var(--neon-purple)"];
             const color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -247,12 +267,14 @@ function createDrawFireworks() {
 function createFireworks() {
     if (fireworks) {
         fireworks.innerHTML = "";
+
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement("div");
             particle.classList.add("particle");
 
             const x = Math.random() * 100;
             const y = Math.random() * 100;
+
             const colors = [
                 "var(--neon-blue)",
                 "var(--neon-pink)",
@@ -271,7 +293,6 @@ function createFireworks() {
     }
 }
 
-// Leaderboard popup
 const btn = document.getElementById("openLeaderboard");
 const overlay = document.getElementById("mm");
 
@@ -286,6 +307,7 @@ mm.addEventListener("click", (e) => {
 });
 
 const closeBtn = document.getElementById("closeLeaderboard");
+
 closeBtn.addEventListener("click", () => {
   mm.style.display = "none";
 });

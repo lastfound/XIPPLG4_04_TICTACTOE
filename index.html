@@ -10,27 +10,22 @@
     <audio id="win-sound" src="sound_menang.mp3" preload="auto"></audio>
     <audio id="draw-sound" src="draw.mp3" preload="auto"></audio>
     <!-- Musik untuk lobby -->
-    <audio id="lobby-music" src="lobby.mp3" autoplay loop></audio>
+    <audio id="lobby-music" src="lobby.mp3" loop preload="auto" autoplay muted></audio>
 </head>
 
 <body>
     <div class="container">
         <h1><span class="highlight">CYBER</span> TIC TAC TOE</h1>
 
-    <div id="lobby-screen" class="lobby-screen">
-    <div class="cyber-bg"></div> <!-- animasi background -->
-    <div class="scanline"></div> <!-- efek scanline -->
-
-    <div class="lobby-content">
-        <h2 class="glitch-text" data-text="WELCOME TO CYBER TIC TAC TOE">
-            WELCOME TO CYBER TIC TAC TOE
-        </h2>
-        <button id="go-to-start" class="glow-btn">START</button>
-    </div>
-
-    <!-- Partikel neon -->
-    <div id="lobby-particles"></div>
-    </div>
+        <!-- Lobby Screen -->
+        <div id="lobby-screen" class="lobby-screen">
+            <div class="lobby-content">
+                <h2 class="glitch" data-text="WELCOME TO CYBER TIC TAC TOE">
+                    WELCOME TO CYBER TIC TAC TOE
+                </h2>
+                <button id="go-to-start" class="glow-btn">START</button>
+            </div>
+        </div>
 
         <!-- Start Screen -->
         <div id="start-screen" class="start-screen" style="display:none;">
