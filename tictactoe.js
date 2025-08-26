@@ -72,12 +72,6 @@ function cellClick(e) {
   const index = e.target.dataset.index;
   if (gameState[index] !== "" || !gameActive) return;
 
-  // Tambahkan efek animasi klik
-  e.target.classList.add("clicked");
-  setTimeout(() => {
-    e.target.classList.remove("clicked");
-  }, 150);
-
   // Putar suara klik
   clickSound.currentTime = 0;
   clickSound.play();
@@ -153,12 +147,23 @@ function highlightWinningCells(pattern) {
   );
 }
 
+// ...existing code...
+// ...existing code...
+
 function resetGame() {
   createBoard();
+
+  // Reset leaderboard data dan tampilan
+  scores = {};
+  localStorage.removeItem("scores");
+  updateLeaderboard();
 }
+
+// ...existing code...
+
 function continueGame() {
   winnerMessage.style.display = "none";
-  resetGame();
+  resetGame(); // Sekarang leaderboard tetap ada
 }
 
 function updateLeaderboard() {
