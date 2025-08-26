@@ -4,6 +4,7 @@ let playerXName, playerOName;
 let scores = JSON.parse(localStorage.getItem("scores")) || {};
 let clickSound, winSound;
 let drawSound, drawMessage, drawFireworks;
+let lobbyScreen, lobbyMusic; // tambahan untuk lobby
 
 document.addEventListener("DOMContentLoaded", () => {
     board = document.getElementById("board");
@@ -15,17 +16,46 @@ document.addEventListener("DOMContentLoaded", () => {
     drawSound = document.getElementById("draw-sound");
     drawMessage = document.getElementById("draw-message");
     drawFireworks = document.getElementById("draw-fireworks");
+
+    // --- Tambahan untuk lobby ---
+    lobbyScreen = document.getElementById("lobby-screen");
+    lobbyMusic = document.getElementById("lobby-music");
+
+    if (lobbyMusic) {
+        lobbyMusic.volume = 0.5;
+        lobbyMusic.play().catch(() => {
+            console.log("Autoplay dicegah, musik lobby akan aktif setelah interaksi user.");
+        });
+
+        // unmute saat user klik pertama kali
+        document.body.addEventListener("click", () => {
+            if (lobbyMusic.muted) {
+                lobbyMusic.muted = false;
+                lobbyMusic.play();
+            }
+        }, { once: true });
+    }
+
+    // Tombol START di lobby → ke input nama
+    const goToStartBtn = document.getElementById("go-to-start");
+    if (goToStartBtn) {
+        goToStartBtn.addEventListener("click", () => {
+            lobbyScreen.style.display = "none";
+            startScreen.style.display = "flex";
+            // ❌ jangan stop musik di sini, biarkan lanjut sampai game dimulai
+        });
+    }
+    // --- akhir tambahan ---
+
     document.getElementById("draw-continue-btn").addEventListener("click", continueGame);
 
-    // Inisialisasi elemen audio
+    // Inisialisasi elemen audio game
     clickSound = document.getElementById("click-sound");
     winSound = document.getElementById("win-sound");
 
     document.getElementById("start-btn").addEventListener("click", startGame);
     document.getElementById("reset-btn").addEventListener("click", resetGame);
-    document
-        .getElementById("continue-btn")
-        .addEventListener("click", continueGame);
+    document.getElementById("continue-btn").addEventListener("click", continueGame);
 
     currentPlayer = "X";
     gameState = Array(9).fill("");
@@ -55,6 +85,12 @@ function startGame() {
     startScreen.style.display = "none";
     gameContainer.style.display = "block";
     createBoard();
+
+    // ✅ musik lobby berhenti setelah game benar-benar dimulai
+    if (lobbyMusic) {
+        lobbyMusic.pause();
+        lobbyMusic.currentTime = 0;
+    }
 }
 
 function createBoard() {
@@ -77,13 +113,11 @@ function cellClick(e) {
     const index = e.target.dataset.index;
     if (gameState[index] !== "" || !gameActive) return;
 
-    // Tambahkan efek animasi klik
     e.target.classList.add("clicked");
     setTimeout(() => {
         e.target.classList.remove("clicked");
     }, 150);
 
-    // Putar suara klik
     clickSound.currentTime = 0;
     clickSound.play();
 
@@ -100,11 +134,7 @@ function checkResult() {
 
     for (let condition of winningConditions) {
         const [a, b, c] = condition;
-        if (
-            gameState[a] &&
-            gameState[a] === gameState[b] &&
-            gameState[a] === gameState[c]
-        ) {
+        if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
             roundWon = true;
             winner = currentPlayer;
             highlightWinningCells(condition);
@@ -114,17 +144,12 @@ function checkResult() {
 
     if (!gameState.includes("")) {
         gameActive = false;
-
-        // Putar suara seri
         drawSound.currentTime = 0;
         drawSound.play();
-
-        // Tampilkan pesan seri
         setTimeout(() => {
             drawMessage.style.display = "flex";
             createDrawFireworks();
         }, 500);
-
         return;
     }
 
@@ -152,12 +177,6 @@ function checkResult() {
         return;
     }
 
-    if (!gameState.includes("")) {
-        gameActive = false;
-        statusText.textContent = "Seri!";
-        return;
-    }
-
     currentPlayer = currentPlayer === "X" ? "O" : "X";
     updateStatus();
 }
@@ -174,15 +193,9 @@ function highlightWinningCells(pattern) {
     );
 }
 
-// ...existing code...
-// ...existing code...
-
 function resetGame() {
     createBoard();
 }
-
-
-
 
 function continueGame() {
     winnerMessage.style.display = "none";
@@ -202,19 +215,15 @@ function updateLeaderboard() {
     });
 }
 
-// Efek draw fireworks
 function createDrawFireworks() {
     if (drawFireworks) {
         drawFireworks.innerHTML = "";
-
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement("div");
             particle.classList.add("particle");
 
             const x = Math.random() * 100;
             const y = Math.random() * 100;
-
-            // Gunakan warna ungu untuk efek seri
             const colors = ["var(--neon-purple)"];
             const color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -226,7 +235,7 @@ function createDrawFireworks() {
             drawFireworks.appendChild(particle);
             setTimeout(() => particle.remove(), 1200);
 
-          drawExtraSound = document.getElementById("draw-extra-sound");
+            drawExtraSound = document.getElementById("draw-extra-sound");
             if (drawExtraSound) {
                 drawExtraSound.currentTime = 0;
                 drawExtraSound.play();
@@ -235,18 +244,15 @@ function createDrawFireworks() {
     }
 }
 
-// Efek fireworks
 function createFireworks() {
     if (fireworks) {
         fireworks.innerHTML = "";
-
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement("div");
             particle.classList.add("particle");
 
             const x = Math.random() * 100;
             const y = Math.random() * 100;
-
             const colors = [
                 "var(--neon-blue)",
                 "var(--neon-pink)",
@@ -265,13 +271,13 @@ function createFireworks() {
     }
 }
 
+// Leaderboard popup
 const btn = document.getElementById("openLeaderboard");
 const overlay = document.getElementById("mm");
 
 btn.addEventListener("click", () => {
   mm.style.display = "flex"; 
 });
-
 
 mm.addEventListener("click", (e) => {
   if (e.target === mm) {
@@ -280,7 +286,6 @@ mm.addEventListener("click", (e) => {
 });
 
 const closeBtn = document.getElementById("closeLeaderboard");
-
 closeBtn.addEventListener("click", () => {
   mm.style.display = "none";
 });
