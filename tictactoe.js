@@ -11,14 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
   gameContainer = document.getElementById("game-container");
   winnerMessage = document.getElementById("winner-message");
   fireworks = document.getElementById("fireworks");
-  
+
   // Inisialisasi elemen audio
   clickSound = document.getElementById("click-sound");
   winSound = document.getElementById("win-sound");
 
   document.getElementById("start-btn").addEventListener("click", startGame);
   document.getElementById("reset-btn").addEventListener("click", resetGame);
-  document.getElementById("continue-btn").addEventListener("click", continueGame);
+  document
+    .getElementById("continue-btn")
+    .addEventListener("click", continueGame);
 
   currentPlayer = "X";
   gameState = Array(9).fill("");
@@ -28,9 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const winningConditions = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
 ];
 
 function startGame() {
@@ -65,6 +72,12 @@ function cellClick(e) {
   const index = e.target.dataset.index;
   if (gameState[index] !== "" || !gameActive) return;
 
+  // Tambahkan efek animasi klik
+  e.target.classList.add("clicked");
+  setTimeout(() => {
+    e.target.classList.remove("clicked");
+  }, 150);
+
   // Putar suara klik
   clickSound.currentTime = 0;
   clickSound.play();
@@ -82,7 +95,11 @@ function checkResult() {
 
   for (let condition of winningConditions) {
     const [a, b, c] = condition;
-    if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+    if (
+      gameState[a] &&
+      gameState[a] === gameState[b] &&
+      gameState[a] === gameState[c]
+    ) {
       roundWon = true;
       winner = currentPlayer;
       highlightWinningCells(condition);
@@ -98,7 +115,7 @@ function checkResult() {
     scores[winnerName]++;
     localStorage.setItem("scores", JSON.stringify(scores));
     updateLeaderboard();
-    
+
     winSound.currentTime = 0;
     winSound.play();
 
@@ -131,17 +148,24 @@ function updateStatus() {
 }
 
 function highlightWinningCells(pattern) {
-  pattern.forEach(i => document.querySelector(`[data-index="${i}"]`).classList.add("winning-cell"));
+  pattern.forEach((i) =>
+    document.querySelector(`[data-index="${i}"]`).classList.add("winning-cell")
+  );
 }
 
-function resetGame() { createBoard(); }
-function continueGame() { winnerMessage.style.display = "none"; resetGame(); }
+function resetGame() {
+  createBoard();
+}
+function continueGame() {
+  winnerMessage.style.display = "none";
+  resetGame();
+}
 
 function updateLeaderboard() {
   const list = document.getElementById("leaderboard-list");
   list.innerHTML = "";
 
-  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   sorted.forEach(([name, score]) => {
     const li = document.createElement("li");
     li.textContent = `${name}: ${score} menang`;
@@ -161,7 +185,11 @@ function createFireworks() {
       const x = Math.random() * 100;
       const y = Math.random() * 100;
 
-      const colors = ["var(--neon-blue)", "var(--neon-pink)", "var(--neon-purple)"];
+      const colors = [
+        "var(--neon-blue)",
+        "var(--neon-pink)",
+        "var(--neon-purple)",
+      ];
       const color = colors[Math.floor(Math.random() * colors.length)];
 
       particle.style.left = `${x}%`;
