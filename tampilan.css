@@ -1,283 +1,349 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap");
-
 :root {
-  --neon-blue: #00f3ff;
-  --neon-pink: #ff00ff;
-  --neon-purple: #bc13fe;
-  --dark-bg: #0a0a0f;
+    --neon-blue: #00f3ff;
+    --neon-pink: #ff00ff;
+    --neon-purple: #bc13fe;
+    --dark-bg: #0a0a0f;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+
 /* ...existing code... */
+
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  /* Tambahkan gradient neon dan efek glow */
-  background: radial-gradient(circle at 20% 30%, #00f3ff33 0%, transparent 60%),
-    radial-gradient(circle at 80% 70%, #ff00ff33 0%, transparent 60%),
-    linear-gradient(135deg, #0a0a0f 60%, #1a0033 100%);
-  color: white;
-  font-family: "Share Tech Mono", monospace;
-  overflow-x: hidden;
-  box-shadow: 0 0 80px 10px #00f3ff22 inset, 0 0 120px 20px #ff00ff22 inset;
-  /* Efek glow lembut di seluruh body */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* Tambahkan gradient neon dan efek glow */
+    background: radial-gradient(circle at 20% 30%, #00f3ff33 0%, transparent 60%), radial-gradient(circle at 80% 70%, #ff00ff33 0%, transparent 60%), linear-gradient(135deg, #0a0a0f 60%, #1a0033 100%);
+    color: white;
+    font-family: "Share Tech Mono", monospace;
+    overflow-x: hidden;
+    box-shadow: 0 0 80px 10px #00f3ff22 inset, 0 0 120px 20px #ff00ff22 inset;
+    /* Efek glow lembut di seluruh body */
 }
 
 @keyframes neonBG {
-  0% {
-    background-position: 0% 50%, 100% 50%, 0% 0%;
-  }
-  50% {
-    background-position: 100% 50%, 0% 50%, 100% 100%;
-  }
-  100% {
-    background-position: 0% 50%, 100% 50%, 0% 0%;
-  }
+    0% {
+        background-position: 0% 50%, 100% 50%, 0% 0%;
+    }
+    50% {
+        background-position: 100% 50%, 0% 50%, 100% 100%;
+    }
+    100% {
+        background-position: 0% 50%, 100% 50%, 0% 0%;
+    }
 }
+
+
 /* ...existing code... */
 
+
 /* Judul */
+
 h1 {
-  font-family: "Orbitron", sans-serif;
-  font-size: 3rem;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px var(--neon-blue);
+    font-family: "Orbitron", sans-serif;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--neon-blue);
 }
 
 .highlight {
-  color: var(--neon-blue);
+    color: var(--neon-blue);
 }
+
 
 /* Start Screen */
+
 .start-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(10, 10, 15, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 15, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
+
 .start-content {
-  padding: 30px;
-  border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 20px var(--neon-blue);
-  background-color: rgba(5, 5, 7, 0.8);
-  text-align: center;
+    padding: 30px;
+    border: 2px solid var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue);
+    background-color: rgba(5, 5, 7, 0.8);
+    text-align: center;
 }
+
 .player-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
 }
+
 .player-inputs label {
-  color: var(--neon-blue);
-  text-shadow: 0 0 8px var(--neon-blue);
+    color: var(--neon-blue);
+    text-shadow: 0 0 8px var(--neon-blue);
 }
+
 .player-inputs input {
-  padding: 8px;
-  background: rgba(10, 10, 15, 0.7);
-  border: 2px solid var(--neon-blue);
-  color: var(--neon-blue);
-  text-align: center;
-  font-family: "Share Tech Mono", monospace;
+    padding: 8px;
+    background: rgba(10, 10, 15, 0.7);
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    text-align: center;
+    font-family: "Share Tech Mono", monospace;
 }
+
 
 /* Game Container */
+
 #game-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* pusatkan horizontal */
-  justify-content: center; /* pusatkan vertical */
-  width: 100%;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* pusatkan horizontal */
+    justify-content: center;
+    /* pusatkan vertical */
+    width: 100%;
+    text-align: center;
 }
 
+
 /* Board */
+
 #board {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
-  gap: 5px;
-  margin: 20px auto;
-  justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin: 20px auto;
+    justify-content: center;
 }
+
 .cell {
-  width: 100px;
-  height: 100px;
-  background: rgba(10, 10, 15, 0.7);
-  border: 2px solid var(--neon-blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s;
+    width: 100px;
+    height: 100px;
+    background: rgba(10, 10, 15, 0.7);
+    border: 2px solid var(--neon-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
 }
 
 .cell.clicked {
-  transform: scale(1.15);
-  box-shadow: 0 0 15px #00ffe7, 0 0 5px #ff00c8;
+    transform: scale(1.15);
+    box-shadow: 0 0 15px #00ffe7, 0 0 5px #ff00c8;
 }
 
 .cell.x-mark {
-  color: var(--neon-blue);
-  text-shadow: 0 0 10px var(--neon-blue);
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
 }
+
 .cell.o-mark {
-  color: var(--neon-pink);
-  text-shadow: 0 0 10px var(--neon-pink);
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
 }
+
 .winning-cell {
-  animation: flash 1s infinite;
+    animation: flash 1s infinite;
 }
+
 @keyframes flash {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
 }
+
 
 /* Efek glitch saat menang */
+
 .glitch-win {
-  animation: glitchBoard 0.5s infinite;
+    animation: glitchBoard 0.5s infinite;
 }
+
 @keyframes glitchBoard {
-  0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-3px, 3px);
-  }
-  40% {
-    transform: translate(3px, -3px);
-  }
-  60% {
-    transform: translate(-2px, -2px);
-  }
-  80% {
-    transform: translate(2px, 2px);
-  }
-  100% {
-    transform: translate(0);
-  }
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-3px, 3px);
+    }
+    40% {
+        transform: translate(3px, -3px);
+    }
+    60% {
+        transform: translate(-2px, -2px);
+    }
+    80% {
+        transform: translate(2px, 2px);
+    }
+    100% {
+        transform: translate(0);
+    }
 }
+
 
 /* Buttons */
+
 button {
-  margin: 10px;
-  padding: 8px 20px;
-  background: transparent;
-  border: 2px solid var(--neon-blue);
-  color: var(--neon-blue);
-  font-family: "Share Tech Mono", monospace;
-  cursor: pointer;
-  transition: 0.3s;
+    margin: 10px;
+    padding: 8px 20px;
+    background: transparent;
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    font-family: "Share Tech Mono", monospace;
+    cursor: pointer;
+    transition: 0.3s;
 }
+
 button:hover {
-  background: rgba(0, 243, 255, 0.1);
-  box-shadow: 0 0 10px var(--neon-blue);
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 10px var(--neon-blue);
 }
+
 .glow-btn {
-  animation: pulse 2s infinite;
+    animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
-  0% {
-    box-shadow: 0 0 10px var(--neon-blue);
-  }
-  50% {
-    box-shadow: 0 0 20px var(--neon-blue);
-  }
-  100% {
-    box-shadow: 0 0 10px var(--neon-blue);
-  }
+    0% {
+        box-shadow: 0 0 10px var(--neon-blue);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--neon-blue);
+    }
+    100% {
+        box-shadow: 0 0 10px var(--neon-blue);
+    }
 }
+
 
 /* Leaderboard */
+
 .leaderboard {
-  margin-top: 20px;
-  padding: 15px;
-  border: 2px solid var(--neon-purple);
-  background: rgba(5, 5, 7, 0.85);
-  box-shadow: 0 0 15px var(--neon-purple);
-  text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid var(--neon-purple);
+    background: rgba(5, 5, 7, 0.85);
+    box-shadow: 0 0 15px var(--neon-purple);
+    text-align: center;
 }
+
 .leaderboard h2 {
-  color: var(--neon-purple);
-  margin-bottom: 10px;
+    color: var(--neon-purple);
+    margin-bottom: 10px;
 }
+
 .leaderboard li {
-  color: var(--neon-blue);
-  margin: 5px 0;
+    color: var(--neon-blue);
+    margin: 5px 0;
 }
+
 
 /* Winner Message */
+
 .winner-message {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(10, 10, 15, 0.9);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 200;
-}
-.winner-content {
-  padding: 20px;
-  border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 20px var(--neon-pink);
-  background: rgba(5, 5, 7, 0.8);
-  text-align: center;
-}
-.winner-content h2 {
-  color: var(--neon-pink);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 15, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 200;
 }
 
+.winner-content {
+    padding: 20px;
+    border: 2px solid var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+    background: rgba(5, 5, 7, 0.8);
+    text-align: center;
+}
+
+.winner-content h2 {
+    color: var(--neon-pink);
+}
+
+
+/* Draw Message */
+
+#draw-message .winner-content h2 {
+    color: var(--neon-purple);
+    text-shadow: 0 0 10px var(--neon-purple);
+}
+
+
+/* Efek khusus untuk seri */
+
+.draw-effect {
+    animation: drawPulse 2s infinite;
+}
+
+@keyframes drawPulse {
+    0% {
+        box-shadow: 0 0 10px var(--neon-purple);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
+    }
+    100% {
+        box-shadow: 0 0 10px var(--neon-purple);
+    }
+}
+
+
 /* Fireworks */
+
 #fireworks {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 300;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 300;
 }
+
 .particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  animation: explode 1s forwards;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: explode 1s forwards;
 }
+
 @keyframes explode {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
 }
