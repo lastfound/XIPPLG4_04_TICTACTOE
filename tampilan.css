@@ -258,6 +258,25 @@ button:hover {
     color: var(--neon-blue);
     margin: 5px 0;
 }
+
+.leaderboard li:nth-child(1) {
+    color: gold;
+    font-weight: bold;
+    text-shadow: 0 0 10px gold;
+}
+
+.leaderboard li:nth-child(2) {
+    color: silver;
+    font-weight: bold;
+    text-shadow: 0 0 10px silver;
+}
+
+.leaderboard li:nth-child(3) {
+    color: #cd7f32; 
+    font-weight: bold;
+    text-shadow: 0 0 10px #cd7f32;
+}
+
 .mm{
   
   display: none;
