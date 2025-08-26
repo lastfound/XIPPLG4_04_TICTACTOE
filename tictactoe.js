@@ -72,6 +72,12 @@ function cellClick(e) {
   const index = e.target.dataset.index;
   if (gameState[index] !== "" || !gameActive) return;
 
+  // Tambahkan efek animasi klik
+  e.target.classList.add("clicked");
+  setTimeout(() => {
+    e.target.classList.remove("clicked");
+  }, 150);
+
   // Putar suara klik
   clickSound.currentTime = 0;
   clickSound.play();
