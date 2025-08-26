@@ -179,14 +179,10 @@ function highlightWinningCells(pattern) {
 
 function resetGame() {
     createBoard();
-
-    // Reset leaderboard data dan tampilan
-    scores = {};
-    localStorage.removeItem("scores");
-    updateLeaderboard();
 }
 
-// ...existing code...
+
+
 
 function continueGame() {
     winnerMessage.style.display = "none";
@@ -268,3 +264,17 @@ function createFireworks() {
         }
     }
 }
+
+const btn = document.getElementById("openLeaderboard");
+const overlay = document.getElementById("mm");
+
+btn.addEventListener("click", () => {
+  mm.style.display = "flex"; 
+});
+
+
+mm.addEventListener("click", (e) => {
+  if (e.target === mm) {
+    mm.style.display = "none";
+  }
+});
