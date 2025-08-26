@@ -56,13 +56,24 @@ h1 {
   text-align: center; font-family: 'Share Tech Mono', monospace;
 }
 
+/* Game Container */
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* pusatkan horizontal */
+  justify-content: center; /* pusatkan vertical */
+  width: 100%;
+  text-align: center;
+}
+
 /* Board */
 #board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  margin: 20px 0;
+  margin: 20px auto;
+  justify-content: center;
 }
 .cell {
   width: 100px; height: 100px;
