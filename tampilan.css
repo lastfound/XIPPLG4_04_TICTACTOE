@@ -292,6 +292,24 @@ button:hover {
   z-index: 999;
 }
 
+.close-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 2px solid var(--neon-pink);
+  color: var(--neon-pink);
+  font-family: "Share Tech Mono", monospace;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 8px;
+}
+
+.close-btn:hover {
+  background: rgba(255, 0, 255, 0.1);
+  box-shadow: 0 0 10px var(--neon-pink);
+}
 
 /* Winner Message */
 

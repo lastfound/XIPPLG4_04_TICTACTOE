@@ -278,3 +278,9 @@ mm.addEventListener("click", (e) => {
     mm.style.display = "none";
   }
 });
+
+const closeBtn = document.getElementById("closeLeaderboard");
+
+closeBtn.addEventListener("click", () => {
+  mm.style.display = "none";
+});
