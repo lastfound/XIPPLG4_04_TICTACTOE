@@ -23,18 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (lobbyMusic) {
         lobbyMusic.volume = 0.5;
-        // autoplay muted dulu (biar lolos aturan browser)
-        lobbyMusic.play().catch(() => {
-            console.log("Autoplay dicegah, musik lobby akan aktif setelah interaksi user.");
-        });
-
-        // unmute saat user klik pertama kali
-        document.body.addEventListener("click", () => {
-            if (lobbyMusic.muted) {
-                lobbyMusic.muted = false;
-                lobbyMusic.play();
-            }
-        }, { once: true });
     }
 
     // Tombol START di lobby
@@ -45,10 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
             lobbyScreen.style.display = "none";
             startScreen.style.display = "flex";
 
-            // stop musik lobby
+            // mulai musik baru setelah tombol start ditekan
             if (lobbyMusic) {
-                lobbyMusic.pause();
                 lobbyMusic.currentTime = 0;
+                lobbyMusic.play();
             }
         });
     }
