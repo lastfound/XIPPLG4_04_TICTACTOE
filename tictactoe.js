@@ -299,3 +299,107 @@ const closeBtn = document.getElementById("closeLeaderboard");
 closeBtn.addEventListener("click", () => {
   mm.style.display = "none";
 });
+
+function checkResult() {
+    let roundWon = false;
+    let winner;
+    let winningPattern = null; 
+
+    for (let condition of winningConditions) {
+        const [a, b, c] = condition;
+        if (
+            gameState[a] &&
+            gameState[a] === gameState[b] &&
+            gameState[a] === gameState[c]
+        ) {
+            roundWon = true;
+            winner = currentPlayer;
+            winningPattern = condition; 
+            highlightWinningCells(condition);
+            break;
+        }
+    }
+
+    if (!gameState.includes("") && !roundWon) {
+        gameActive = false;
+
+        drawSound.currentTime = 0;
+        drawSound.play();
+
+        setTimeout(() => {
+            drawMessage.style.display = "flex";
+            createDrawFireworks();
+        }, 500);
+
+        return;
+    }
+
+    if (roundWon) {
+        gameActive = false;
+        const winnerName = winner === "X" ? playerXName : playerOName;
+
+        if (!scores[winnerName]) scores[winnerName] = 0;
+        scores[winnerName]++;
+        localStorage.setItem("scores", JSON.stringify(scores));
+        updateLeaderboard();
+
+        winSound.currentTime = 0;
+        winSound.play();
+
+        
+        const cells = winningPattern.map(index =>
+            document.querySelector(`[data-index="${index}"]`)
+        );
+        drawWinningLine(cells);
+
+        board.classList.add("glitch-win");
+        setTimeout(() => board.classList.remove("glitch-win"), 1000);
+
+        setTimeout(() => {
+            document.getElementById("winner-player").textContent = winnerName;
+            winnerMessage.style.display = "flex";
+            createFireworks();
+        }, 500);
+
+        return;
+    }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    updateStatus();
+}
+
+function drawWinningLine(cells) {
+    
+    const boardRect = board.getBoundingClientRect();
+
+   
+    const firstRect = cells[0].getBoundingClientRect();
+    const lastRect = cells[2].getBoundingClientRect();
+
+    
+    const x1 = firstRect.left + firstRect.width / 2 - boardRect.left;
+    const y1 = firstRect.top + firstRect.height / 2 - boardRect.top;
+    const x2 = lastRect.left + lastRect.width / 2 - boardRect.left;
+    const y2 = lastRect.top + lastRect.height / 2 - boardRect.top;
+
+    const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+
+    const line = document.createElement("div");
+    line.classList.add("winning-line");
+    Object.assign(line.style, {
+        position: "absolute",
+        left: `${x1}px`,
+        top: `${y1}px`,
+        width: `${length}px`,
+        height: "4px",
+        background: "cyan",
+        transformOrigin: "0 50%",
+        transform: `rotate(${angle}deg)`,
+        boxShadow: "0 0 10px #0ff, 0 0 20px #f0f",
+        zIndex: 10
+    });
+
+    
+    board.appendChild(line);
+}

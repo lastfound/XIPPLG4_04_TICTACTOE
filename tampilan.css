@@ -227,6 +227,7 @@ h1 {
     gap: 5px;
     margin: 20px auto;
     justify-content: center;
+    position: relative;
 }
 
 .cell {
@@ -501,4 +502,15 @@ button:hover {
         transform: scale(2.5);
         opacity: 0;
     }
+}
+
+.winning-line {
+    z-index: 100;
+}
+
+#winner-message {
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
