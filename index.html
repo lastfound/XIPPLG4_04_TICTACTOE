@@ -10,7 +10,7 @@
     <audio id="win-sound" src="sound_menang.mp3" preload="auto"></audio>
     <audio id="draw-sound" src="draw.mp3" preload="auto"></audio>
     <!-- Musik untuk lobby -->
-    <audio id="lobby-music" src="lobby.mp3" loop preload="auto" autoplay muted></audio>
+    <audio id="lobby-music" src="lobby.mp3" loop preload="auto"></audio>
 </head>
 
 <body>
@@ -23,11 +23,22 @@
                 <h2 class="glitch" data-text="WELCOME TO CYBER TIC TAC TOE">
                     WELCOME TO CYBER TIC TAC TOE
                 </h2>
-                <button id="go-to-start" class="glow-btn">START</button>
+                <button id="start-lobby-btn" class="glow-btn">START</button>
+            </div>
+        </div>
+        
+        <!-- Mode Selection Screen -->
+        <div id="mode-selection-screen" class="mode-selection-screen" style="display:none;">
+            <div class="mode-selection-content">
+                <h2>PILIH MODE PERMAINAN</h2>
+                <div class="mode-selection">
+                    <button id="play-vs-player" class="glow-btn">PLAYER VS PLAYER</button>
+                    <button id="play-vs-bot" class="glow-btn">PLAYER VS BOT</button>
+                </div>
             </div>
         </div>
 
-        <!-- Start Screen -->
+        <!-- Start Screen (Player vs Player) -->
         <div id="start-screen" class="start-screen" style="display:none;">
             <div class="start-content">
                 <h2>MASUKKAN NAMA PEMAIN</h2>
@@ -37,7 +48,33 @@
                     <label for="playerO">Pemain O</label>
                     <input type="text" id="playerO" placeholder="Nama Pemain O">
                 </div>
-                <button id="start-btn" class="glow-btn">MULAI GAME</button>
+                <div class="button-group">
+                    <button id="back-to-mode-btn" class="back-btn">KEMBALI</button>
+                    <button id="start-btn" class="glow-btn">MULAI GAME</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Start Screen (Player vs Bot) -->
+        <div id="start-screen-bot" class="start-screen" style="display:none;">
+            <div class="start-content">
+                <h2>MASUKKAN NAMA PEMAIN</h2>
+                <div class="player-inputs">
+                    <label for="playerXBot">Pemain X</label>
+                    <input type="text" id="playerXBot" placeholder="Nama Pemain X">
+                    <p>Lawan: Bot (O)</p>
+                </div>
+                <div class="difficulty-selection">
+                    <p>Tingkat Kesulitan:</p>
+                    <div class="difficulty-options">
+                        <button id="easy-mode" class="difficulty-btn selected">Mudah</button>
+                        <button id="hard-mode" class="difficulty-btn">Sulit</button>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="back-to-mode-btn-bot" class="back-btn">KEMBALI</button>
+                    <button id="start-bot-btn" class="glow-btn">MULAI GAME</button>
+                </div>
             </div>
         </div>
 
@@ -53,7 +90,18 @@
                 <div id="leaderboard" class="leaderboard">
                     <h2>🏆 LEADERBOARD 🏆</h2>
                     <button id="closeLeaderboard" class="close-btn">❌</button>
-                    <ul id="leaderboard-list"></ul>
+                    <div class="leaderboard-tabs">
+                        <button id="tab-pvp" class="tab-btn active">Player vs Player</button>
+                        <button id="tab-bot" class="tab-btn">Player vs Bot</button>
+                    </div>
+                    <div id="leaderboard-pvp" class="leaderboard-content active">
+                        <h3>Mode Player vs Player</h3>
+                        <ul id="leaderboard-list-pvp"></ul>
+                    </div>
+                    <div id="leaderboard-bot" class="leaderboard-content">
+                        <h3>Mode Player vs Bot</h3>
+                        <ul id="leaderboard-list-bot"></ul>
+                    </div>
                 </div>
             </div>
         </div>
