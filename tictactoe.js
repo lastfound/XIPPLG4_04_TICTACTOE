@@ -52,22 +52,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const playVsBotBtn = document.getElementById("play-vs-bot");
     
     if (playVsPlayerBtn) {
-        playVsPlayerBtn.addEventListener("click", () => {
-            // sembunyikan pilihan mode, tampilkan input nama untuk mode player vs player
-            modeSelectionScreen.style.display = "none";
-            startScreen.style.display = "flex";
-            isPlayingAgainstBot = false;
-        });
-    }
-    
-    if (playVsBotBtn) {
-        playVsBotBtn.addEventListener("click", () => {
-            // sembunyikan pilihan mode, tampilkan input nama untuk mode player vs bot
-            modeSelectionScreen.style.display = "none";
-            startScreenBot.style.display = "flex";
-            isPlayingAgainstBot = true;
-        });
-    }
+    playVsPlayerBtn.addEventListener("click", () => {
+        modeSelectionScreen.style.display = "none";
+        startScreen.style.display = "flex";
+        isPlayingAgainstBot = false;
+
+        // 🔹 Tambahan: update tombol switch mode
+        if (modeSwitchBtn) modeSwitchBtn.textContent = "Mode: Player vs Player";
+    });
+}
+
+if (playVsBotBtn) {
+    playVsBotBtn.addEventListener("click", () => {
+        modeSelectionScreen.style.display = "none";
+        startScreenBot.style.display = "flex";
+        isPlayingAgainstBot = true;
+
+        // 🔹 Tambahan: update tombol switch mode
+        if (modeSwitchBtn) modeSwitchBtn.textContent = "Mode: Player vs Bot";
+    });
+}
     
     // Setup tombol tingkat kesulitan
     const easyModeBtn = document.getElementById("easy-mode");
@@ -147,16 +151,15 @@ const winningConditions = [
 ];
 
 function startGame(vsBot) {
-    isPlayingAgainstBot = vsBot;
-    
-    if (vsBot) {
+    // Jangan timpa isPlayingAgainstBot lagi, pakai state dari tombol switch
+    if (isPlayingAgainstBot) {
         playerXName = document.getElementById("playerXBot").value.trim() || "Player X";
         playerOName = "Bot";
-        startScreenBot.style.display = "none";
+        if (startScreenBot) startScreenBot.style.display = "none";
     } else {
         playerXName = document.getElementById("playerX").value.trim() || "Player X";
         playerOName = document.getElementById("playerO").value.trim() || "Player O";
-        startScreen.style.display = "none";
+        if (startScreen) startScreen.style.display = "none";
     }
 
     localStorage.setItem("playerX", playerXName);
@@ -612,3 +615,29 @@ function findBestMove() {
     const availableMoves = gameState.map((cell, i) => cell === "" ? i : null).filter(i => i !== null);
     return availableMoves[Math.floor(Math.random() * availableMoves.length)];
 }
+
+const modeSwitchBtn = document.getElementById("modeSwitchBtn");
+modeSwitchBtn.addEventListener("click", () => {
+    // Toggle mode
+    isPlayingAgainstBot = !isPlayingAgainstBot;
+
+    // Update teks tombol
+    if (isPlayingAgainstBot) {
+        modeSwitchBtn.textContent = "Mode: Player vs Bot";
+
+        // Sembunyikan popup PvP, tampilkan popup Bot
+        if (startScreen) startScreen.style.display = "none";
+        if (startScreenBot) startScreenBot.style.display = "flex";
+
+    } else {
+        modeSwitchBtn.textContent = "Mode: Player vs Player";
+
+        // Sembunyikan popup Bot, tampilkan popup PvP
+        if (startScreenBot) startScreenBot.style.display = "none";
+        if (startScreen) startScreen.style.display = "flex";
+    }
+
+    // Reset papan & status agar bersih
+    resetGame();
+    updateStatus();
+});
