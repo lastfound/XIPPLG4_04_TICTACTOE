@@ -22,10 +22,90 @@ document.addEventListener("DOMContentLoaded", () => {
   drawMessage = document.getElementById("draw-message");
   drawFireworks = document.getElementById("draw-fireworks");
 
+<<<<<<< Updated upstream
   // --- Tambahan untuk lobby ---
   lobbyScreen = document.getElementById("lobby-screen");
   const modeSelectionScreen = document.getElementById("mode-selection-screen");
   lobbyMusic = document.getElementById("lobby-music");
+=======
+    const themes = [
+  {
+    name: "Biru-Pink",
+    blue: "#00f3ff",
+    pink: "#ff00ff",
+    purple: "#bc13fe",
+    cellBg: "rgba(10, 10, 15, 0.7)",
+    click1: "#00ffe7",
+    click2: "#ff00c8",
+    bg1: "#00f3ff22",
+    bg2: "#ff00ff22",
+    win1: "#0ff",
+    win2: "#f0f"
+  },
+  {
+    name: "Hijau-Kuning",
+    blue: "#39ff14",
+    pink: "#ffff00",
+    purple: "#00ffaa",
+    cellBg: "rgba(7,12,7,0.7)",
+    click1: "#7fff00",
+    click2: "#ffd700",
+    bg1: "#39ff1422",
+    bg2: "#ffff0022",
+    win1: "#7fff00",
+    win2: "#ffd700"
+  },
+  {
+    name: "Merah-Cyan",
+    blue: "#ff073a",
+    pink: "#00fff7",
+    purple: "#ff4da6",
+    cellBg: "rgba(25,5,5,0.7)",
+    click1: "#ff073a",
+    click2: "#00fff7",
+    bg1: "#ff073a22",
+    bg2: "#00fff722",
+    win1: "#ff073a",
+    win2: "#00fff7"
+  }
+];
+
+let currentThemeIndex = 0;
+
+function applyTheme(index) {
+  const t = themes[index];
+  const root = document.documentElement.style;
+  root.setProperty("--neon-blue", t.blue);
+  root.setProperty("--neon-pink", t.pink);
+  root.setProperty("--neon-purple", t.purple);
+  root.setProperty("--cell-bg", t.cellBg);
+  root.setProperty("--click-shadow-1", t.click1);
+  root.setProperty("--click-shadow-2", t.click2);
+  root.setProperty("--bg-glow-1", t.bg1);
+  root.setProperty("--bg-glow-2", t.bg2);
+  root.setProperty("--winning-line-color", t.blue);
+  root.setProperty("--winning-line-shadow-1", t.win1);
+  root.setProperty("--winning-line-shadow-2", t.win2);
+}
+
+// pasang event pada tombol tunggal
+const themeBtn = document.getElementById("themeBtn");
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    applyTheme(currentThemeIndex);
+  });
+}
+
+// terapkan tema awal
+applyTheme(currentThemeIndex);
+// ---------- akhir theme scripts ----------
+
+    // --- Tambahan untuk lobby ---
+    lobbyScreen = document.getElementById("lobby-screen");
+    const modeSelectionScreen = document.getElementById("mode-selection-screen");
+    lobbyMusic = document.getElementById("lobby-music");
+>>>>>>> Stashed changes
 
   if (lobbyMusic) {
     lobbyMusic.volume = 0.5;
@@ -197,6 +277,7 @@ function createBoard() {
 }
 
 function cellClick(e) {
+<<<<<<< Updated upstream
   const index = e.target.dataset.index;
 
   // 🔹 Tambahan fix: kalau lawan bot dan sekarang giliran bot, jangan bisa klik
@@ -226,6 +307,30 @@ function cellClick(e) {
       makeBotMove();
     }, 700); // Delay untuk memberikan kesan bot sedang berpikir
   }
+=======
+    const index = e.target.dataset.index;
+
+    // 🚫 Cegah klik saat giliran bot
+    if (isPlayingAgainstBot && currentPlayer === "O") return;
+
+    if (gameState[index] !== "" || !gameActive) return;
+
+    e.target.classList.add("clicked");
+    setTimeout(() => e.target.classList.remove("clicked"), 150);
+
+    clickSound.currentTime = 0;
+    clickSound.play();
+
+    gameState[index] = currentPlayer;
+    e.target.textContent = currentPlayer;
+    e.target.classList.add(currentPlayer === "X" ? "x-mark" : "o-mark");
+
+    checkResult();
+
+    if (isPlayingAgainstBot && gameActive && currentPlayer === "O") {
+        setTimeout(() => makeBotMove(), 700);
+    }
+>>>>>>> Stashed changes
 }
 
 function checkResult() {
@@ -503,6 +608,7 @@ function checkResult() {
 }
 
 function drawWinningLine(cells) {
+<<<<<<< Updated upstream
   const boardRect = board.getBoundingClientRect();
 
   const firstRect = cells[0].getBoundingClientRect();
@@ -512,10 +618,21 @@ function drawWinningLine(cells) {
   const y1 = firstRect.top + firstRect.height / 2 - boardRect.top;
   const x2 = lastRect.left + lastRect.width / 2 - boardRect.left;
   const y2 = lastRect.top + lastRect.height / 2 - boardRect.top;
+=======
+    const boardRect = board.getBoundingClientRect();
+    const firstRect = cells[0].getBoundingClientRect();
+    const lastRect = cells[2].getBoundingClientRect();
+
+    const x1 = firstRect.left + firstRect.width / 2 - boardRect.left;
+    const y1 = firstRect.top + firstRect.height / 2 - boardRect.top;
+    const x2 = lastRect.left + lastRect.width / 2 - boardRect.left;
+    const y2 = lastRect.top + lastRect.height / 2 - boardRect.top;
+>>>>>>> Stashed changes
 
   const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
   const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
 
+<<<<<<< Updated upstream
   const line = document.createElement("div");
   line.classList.add("winning-line");
   Object.assign(line.style, {
@@ -532,6 +649,30 @@ function drawWinningLine(cells) {
   });
 
   board.appendChild(line);
+=======
+    // 🔹 Ambil warna dari CSS variable
+    const cs = getComputedStyle(document.documentElement);
+    const winColor = cs.getPropertyValue("--winning-line-color").trim();
+    const winShadow1 = cs.getPropertyValue("--winning-line-shadow-1").trim();
+    const winShadow2 = cs.getPropertyValue("--winning-line-shadow-2").trim();
+
+    const line = document.createElement("div");
+    line.classList.add("winning-line");
+    Object.assign(line.style, {
+        position: "absolute",
+        left: `${x1}px`,
+        top: `${y1}px`,
+        width: `${length}px`,
+        height: "4px",
+        background: winColor,
+        transformOrigin: "0 50%",
+        transform: `rotate(${angle}deg)`,
+        boxShadow: `0 0 10px ${winShadow1}, 0 0 20px ${winShadow2}`,
+        zIndex: 10
+    });
+
+    board.appendChild(line);
+>>>>>>> Stashed changes
 }
 
 // Fungsi untuk bot membuat gerakan

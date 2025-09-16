@@ -1,9 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap");
 :root {
-    --neon-blue: #00f3ff;
+     --neon-blue: #00f3ff;
     --neon-pink: #ff00ff;
     --neon-purple: #bc13fe;
     --dark-bg: #0a0a0f;
+
+    /* tambahan variable untuk cell/effect */
+    --cell-bg: rgba(10, 10, 15, 0.7);
+    --cell-border: var(--neon-blue);
+
+    --click-shadow-1: #00ffe7;
+    --click-shadow-2: #ff00c8;
+
+    --bg-glow-1: #00f3ff22;
+    --bg-glow-2: #ff00ff22;
+
+    --winning-line-color: var(--neon-blue);
+    --winning-line-shadow-1: #0ff;
+    --winning-line-shadow-2: #f0f;
 }
 
 * {
@@ -24,7 +38,7 @@ body {
     color: white;
     font-family: "Share Tech Mono", monospace;
     overflow-x: hidden;
-    box-shadow: 0 0 80px 10px #00f3ff22 inset, 0 0 120px 20px #ff00ff22 inset;
+    box-shadow: 0 0 80px 10px var(--bg-glow-1) inset, 0 0 120px 20px var(--bg-glow-2) inset;
 }
 
 /* Lobby Screen */
@@ -408,8 +422,8 @@ h1 {
 .cell {
     width: 100px;
     height: 100px;
-    background: rgba(10, 10, 15, 0.7);
-    border: 2px solid var(--neon-blue);
+    background: var(--cell-bg);
+  border: 2px solid var(--neon-blue);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -420,7 +434,7 @@ h1 {
 
 .cell.clicked {
     transform: scale(1.15);
-    box-shadow: 0 0 15px #00ffe7, 0 0 5px #ff00c8;
+    box-shadow: 0 0 15px var(--click-shadow-1), 0 0 5px var(--click-shadow-2);
 }
 
 .cell.x-mark {
@@ -699,6 +713,8 @@ button:hover {
 }
 
 .winning-line {
+    background: var(--winning-line-color);
+    box-shadow: 0 0 10px var(--winning-line-shadow-1), 0 0 20px var(--winning-line-shadow-2);
     z-index: 100;
 }
 
@@ -707,4 +723,27 @@ button:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.theme-switcher {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.theme-btn {
+  padding: 6px 14px;
+  border: 2px solid var(--neon-blue);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--neon-blue);
+  cursor: pointer;
+  font-family: "Share Tech Mono", monospace;
+  transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+  background: rgba(0, 243, 255, 0.1);
+  box-shadow: 0 0 10px var(--neon-blue);
 }
