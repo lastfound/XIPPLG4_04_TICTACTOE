@@ -423,7 +423,7 @@ h1 {
     width: 100px;
     height: 100px;
     background: var(--cell-bg);
-  border: 2px solid var(--neon-blue);
+    border: 2px solid var(--neon-blue);
     display: flex;
     align-items: center;
     justify-content: center;
